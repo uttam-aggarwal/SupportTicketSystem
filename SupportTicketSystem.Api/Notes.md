@@ -715,3 +715,46 @@ dotnet ef database update
 
 this will sync your c# code structres of tabels to your sql server
 
+```
+using System.Security.Claims;
+
+namespace SupportTicketSystem.Api.Helpers
+{
+    public static class ClaimsPrincipalExtensions
+    {
+        public static int GetUserId(this ClaimsPrincipal user)
+        {
+            return int.Parse(user.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        }
+        public static string GetUserRole(this ClaimsPrincipal user)
+        {
+            return user.FindFirst(ClaimTypes.Role)!.Value;
+        }
+    }
+}
+```
+here we are making a extension for claims principal class that is predefined in the library we are making two methods that returns us our userid and role of the person that is currently logged in , this is done by authorizing the token that comes with the request and verifying it then making the claims and use this method to access them.
+
+`Priority = Enum.Parse<TicketPriority>(dto.Priority, true)
+we parse this becuase the dto witht eh information coming from  is of type string as define in createticketdto but the priorty in the backend in model ticket.cs have it as a enum so we need to parse "high" as ticketpriority.high so we are parsing it here / also the true here means ignore the uppercase and lowercase
+
+Iqueryable is used to write query we write query for sql then using 
+await query.ToListAsync();
+using this we send it to run in sql directly as this is better so we need to load all the data in our code and this can run in the database itself so it's more efficent 
+later here 
+```
+  var ticket=await _context.Tickets
+                .Include(t=>t.CreatedByUser)
+                .Include(t=>t.AssignedAgent)
+                .FirstOrDefaultAsync(t=>t.Id==id);
+```
+here we didn't used iqueryable becuase we already know what ticket to get and we need to get only one particular ticket
+plus "You actually are using IQueryable internally.
+_context.Tickets itself is an IQueryable<Ticket>.
+But you are chaining everything and executing immediately with:
+FirstOrDefaultAsync()
+this Executes the SQL immediately."
+
+we didn't write authorize becuase we need to check inside the method anyway plus we check the authorization before hand to stop it from entering the method to begin with and we need not to do that here
+
+The HTTP PUT method is used to create a new resource or replace the entire representation of an existing resource at a specific, client-defined URL
