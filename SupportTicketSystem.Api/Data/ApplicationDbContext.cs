@@ -22,7 +22,7 @@ namespace SupportTicketSystem.Api.Data
             .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Ticket>()
-            .HasOne(t=>t.AssignedAgentUser)
+            .HasOne(t=>t.AssignedAgent)
             .WithMany()
             .HasForeignKey(t=>t.AssignedAgentId)
             .OnDelete(DeleteBehavior.Restrict);

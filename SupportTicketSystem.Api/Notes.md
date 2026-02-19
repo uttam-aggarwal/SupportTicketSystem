@@ -758,3 +758,27 @@ this Executes the SQL immediately."
 we didn't write authorize becuase we need to check inside the method anyway plus we check the authorization before hand to stop it from entering the method to begin with and we need not to do that here
 
 The HTTP PUT method is used to create a new resource or replace the entire representation of an existing resource at a specific, client-defined URL
+
+
+
+
+
+//TOCHECKKKK
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:5173")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+});
+
+
+app.UseHttpsRedirection();
+app.UseCors("AllowFrontend");// added this one
+
+
+we added these as a support for frontend check these later
