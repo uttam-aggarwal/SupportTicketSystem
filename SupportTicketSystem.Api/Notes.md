@@ -782,3 +782,11 @@ app.UseCors("AllowFrontend");// added this one
 
 
 we added these as a support for frontend check these later
+
+here cors is cross origin resource sharing
+so generally browser is made to block request coming from other website to prevent just anybody to call your APIs so 
+what is origin? a mixture of protocol ,domain and port sort of a origin of request
+so here we are add a new policy with name allowfrontend -> just a name 
+we allow getting request from this particular port
+later we use 
+app.useCors("allowFrontend") to activate it -> simple

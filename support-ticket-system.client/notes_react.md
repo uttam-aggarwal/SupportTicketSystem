@@ -120,4 +120,77 @@ and when users sends setEmail("abc@gmail.com") email="abc@gmail.com"
 const navigate = useNavigate();
 this navigate is use to change the components of the page without refreshing using react dom this is how we build single page systems
 
+next we opened a try block as we are expecting all sorts of error like login failed due to password or username plus network errors 
+
+the handle login funciton triggers onsubmit as mention in the return and e inside the async(e) is a event object here the event is submit so it is for the submit event here 
+e.preventdefault() this stop the default behaviour where the request makes the whole page reload as we are using react to handle that
+
+the line 
+```
+ const res = await axios.post("/auth/login", {
+        email,
+        password,
+      });
+```
+this res -> represents the response that we will get back from the backend probably like res.data.token and res.data.role
+
+then we use await as response from server generally takes time
+and we use axios.post()
+this axios is custom one we created the axios.js file not the degault axios
+it ahve baseurl of our localhost and port so the request will be like http://localhost:xxxx/auth/login and the email, password will automatically converted as a json file in the form
+email:abc@gmail.com
+password:something
+
+later we use localstorage of the browser to store our token and role and navigate to the dashboard
+if we got an error we just alert login failed for now.
+
+
+now in the retuen we define our jsx structure that looks like htmk
+we made a input and here e set the value of email to whatever they typed and same with the password
+
+the buttont ype here is submit that ttriggers the onsubmit that then triggers the handle login function
+
+
+now we will make a authcontext so that we don;t ahve to use local storage everytime i need to know the user's role plus use global context will let me call it from anywhere so sharing will be easier
+
+```
+import {createContext,useContext} from "react";
+
+const AuthContext = createContext();
+
+export const AuthProvider = ({ children }) => {
+    const role =localStorage.getItem("role");
+
+    return(
+        <AuthContext.Provider value={{ role }}>
+            {children}
+        </AuthContext.Provider>
+    );
+}
+export const useAuth = () => useContext(AuthContext);
+```
+here createcontext lets me make a global container and use context let me use that
+here i define the name of a context clal authcontext
+
+`export const AuthProvider = ({ children }) =>
+
+here children is the list of the components inside the porvider components later we will use it to say that make role available to all childrens
+
+here it will be <App> as we defined in main.jsx
+
+then 
+```
+return(
+        <AuthContext.Provider value={{ role }}>
+            {children}
+        </AuthContext.Provider>
+    );
+```
+here we are defining the same
+it means make role avaialbe to all , role we already got from the localstorage once
+
+`export const useAuth = () => useContext(AuthContext);
+this is just a helper function that lets you do
+const  { role }  = useAuth() instead of 
+const  { role }  = useContext(AuthContext) making it much simpler.
 
