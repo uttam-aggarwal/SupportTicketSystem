@@ -1,9 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
-
-function Dashboard() {
-  return <h1>Dashboard</h1>;
-}
+import Dashboard from "./pages/Dashboard";
 
 export default function App() {
   return (
